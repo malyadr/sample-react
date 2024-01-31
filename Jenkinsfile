@@ -75,23 +75,24 @@ pipeline {
 
     stage("Pushing GCR Image") {
       steps {
-        container('gcloud') {
+        container('gcloud','docker') {
           script {
             input message: 'Do you want to configure Docker for GCR?', ok: 'Yes'
              withCredentials([file(credentialsId: 'sa-test', variable: 'GOOGLE_CLOUD_KEY_FILE_ID')]) {
               sh "gcloud auth activate-service-account --key-file=${GOOGLE_CLOUD_KEY_FILE_ID}"
               sh "gcloud config set project ${params.GCP_PROJECT_ID}"  
               sh "gcloud auth configure-docker"
+              sh "docker push gcr.io/${params.GCP_PROJECT_ID}/${params.GCR_IMAGE_NAME}:${params.GCR_IMAGE_TAG}"
             }
           }
         }
 
-        container('docker') {
-            script {
-                sh "docker push gcr.io/${params.GCP_PROJECT_ID}/${params.GCR_IMAGE_NAME}:${params.GCR_IMAGE_TAG}"
-            }
+        // container('docker') {
+        //     script {
+        //         sh "docker push gcr.io/${params.GCP_PROJECT_ID}/${params.GCR_IMAGE_NAME}:${params.GCR_IMAGE_TAG}"
+        //     }
 
-        }
+        // }
       }
     }
   }
