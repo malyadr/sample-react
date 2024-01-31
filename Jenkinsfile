@@ -1,7 +1,25 @@
 pipeline {
-  agent any
-  tools {
-    dockerTool "docker"
+  agent {
+    kubernetes {
+      yaml '''
+        apiVersion: v1
+        kind: Pod
+        spec:
+          containers:
+          - name: docker
+            image: docker:latest
+            command:
+            - cat
+            tty: true
+            volumeMounts:
+            - mountPath: /var/run/docker.sock
+              name: docker-sock
+          volumes:
+          - name: docker-sock
+            hostPath:
+              path: /var/run/docker.sock    
+        '''
+    }
   }
   stages {
     stage('Setup parameters') {
@@ -29,29 +47,37 @@ pipeline {
 
     stage('Pulling Image from ECR') {
       steps {
-        script {
-          sh "docker --version"
-          sh "docker build . -t samplereact:latest"
+        container('docker') {
+          script {
+            sh "docker pull <your-ecr-repository-url>:latest"
+          }
         }
       }
     }
 
     stage("Tagging ECR Image") {
       steps {
-        script {
-          sh "docker tag samplereact:latest gcr.io/${params.GCP_PROJECT_ID}/${params.GCR_IMAGE_NAME}:${params.GCR_IMAGE_TAG}"
+        container('docker') {
+          script {
+            sh "docker tag <your-ecr-repository-url>:latest gcr.io/${params.GCP_PROJECT_ID}/${params.GCR_IMAGE_NAME}:${params.GCR_IMAGE_TAG}"
+          }
         }
       }
     }
 
-    stage("Pushing ECR Image to GCR") {
+    stage("Pushing GCR Image") {
       steps {
-        script {
-          withDockerRegistry([credentialsId: "sa-gcr-image", url: "https://gcr.io"]) {
-            sh "docker push gcr.io/${params.GCP_PROJECT_ID}/${params.GCR_IMAGE_NAME}:${params.GCR_IMAGE_TAG}"
+        container('docker') {
+          script {
+            withDockerRegistry([credentialsId: "sa-gcr-image", url: "https://gcr.io"]) {
+              sh "docker push gcr.io/${params.GCP_PROJECT_ID}/${params.GCR_IMAGE_NAME}:${params.GCR_IMAGE_TAG}"
+            }
           }
         }
       }
     }
   }
 }
+
+
+
