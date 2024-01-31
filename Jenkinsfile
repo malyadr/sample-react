@@ -67,7 +67,7 @@ pipeline {
       steps {
         container('docker') {
           script {
-            sh "docker tag sample-react:latest gcr.io/${params.GCP_PROJECT_ID}/${params.GCR_IMAGE_NAME}:${params.GCR_IMAGE_TAG}"
+            sh "docker tag sample-react:latest eu.gcr.io/${params.GCP_PROJECT_ID}/${params.GCR_IMAGE_NAME}:${params.GCR_IMAGE_TAG}"
           }
         }
       }
