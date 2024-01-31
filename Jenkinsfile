@@ -45,21 +45,21 @@ pipeline {
       }
     }
 
-    stage('Pulling Image from ECR') {
+    stage('bulid image') {
       steps {
         container('docker') {
           script {
-            sh "docker pull <your-ecr-repository-url>:latest"
+            sh "docker build . -t sample-react:latest"
           }
         }
       }
     }
 
-    stage("Tagging ECR Image") {
+    stage("Tagging  Image") {
       steps {
         container('docker') {
           script {
-            sh "docker tag <your-ecr-repository-url>:latest gcr.io/${params.GCP_PROJECT_ID}/${params.GCR_IMAGE_NAME}:${params.GCR_IMAGE_TAG}"
+            sh "docker tag sample-react:latest gcr.io/${params.GCP_PROJECT_ID}/${params.GCR_IMAGE_NAME}:${params.GCR_IMAGE_TAG}"
           }
         }
       }
