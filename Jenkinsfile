@@ -78,7 +78,7 @@ pipeline {
         container('docker') {
           script {
             withDockerRegistry([credentialsId: "gcr:sa-gcr-image", url: "https://eu.gcr.io"]) {
-               sh "docker push gcr.io/${params.GCP_PROJECT_ID}/${params.GCR_IMAGE_NAME}:${params.GCR_IMAGE_TAG}"
+               sh "docker push eu.gcr.io/${params.GCP_PROJECT_ID}/${params.GCR_IMAGE_NAME}:${params.GCR_IMAGE_TAG}"
             }
           }
         }
