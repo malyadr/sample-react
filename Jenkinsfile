@@ -77,10 +77,11 @@ pipeline {
       steps {
         container('gcloud') {
           script {
-             withCredentials([file(credentialsId: 'sa-test', variable: 'GOOGLE_CLOUD_KEY_FILE_ID')]) {
-              sh "gcloud auth activate-service-account --key-file=${GOOGLE_CLOUD_KEY_FILE_ID}"
-              sh "gcloud config set project ${params.GCP_PROJECT_ID}"  
-            }
+            sh "gcloud config list"
+            //  withCredentials([file(credentialsId: 'sa-test', variable: 'GOOGLE_CLOUD_KEY_FILE_ID')]) {
+            //   sh "gcloud auth activate-service-account --key-file=${GOOGLE_CLOUD_KEY_FILE_ID}"
+            //   sh "gcloud config set project ${params.GCP_PROJECT_ID}"  
+            // }
           }
         }
 
