@@ -30,8 +30,7 @@ pipeline {
     stage('Pulling Image from ECR') {
       steps {
         script {
-          sh "systemctl status docker"
-          sh "systemctl start docker"
+          sh "docekr --version"
           sh "docker build . -t samplereact:latest"
         }
       }
