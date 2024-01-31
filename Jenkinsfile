@@ -72,7 +72,7 @@ pipeline {
       steps {
         container('docker') {
           script {
-             withCredentials([file(credentialsId: 'sa-gcr-image', variable: 'GOOGLE_CLOUD_KEY_FILE')]) {
+             withCredentials([file(credentialsId: 'sa-test', variable: 'GOOGLE_CLOUD_KEY_FILE')]) {
               sh "gcloud auth activate-service-account --key-file=${GOOGLE_CLOUD_KEY_FILE}"
               sh "gcloud config set project ${params.GCP_PROJECT_ID}"
               sh "docker push gcr.io/${params.GCP_PROJECT_ID}/${params.GCR_IMAGE_NAME}:${params.GCR_IMAGE_TAG}"
