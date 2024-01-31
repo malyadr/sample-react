@@ -71,7 +71,7 @@ pipeline {
       steps {
         container('docker') {
           script {
-            sh "docker tag sample-react:latest gcr.io/${params.GCP_PROJECT_ID}/${params.GCR_IMAGE_NAME}:${BUILD_ID}"
+            sh "docker tag sample-react:latest gcr.io/${params.GCP_PROJECT_ID}/${params.GCR_IMAGE_NAME}:${env.BUILD_ID}"
           }
         }
       }
@@ -82,7 +82,7 @@ pipeline {
         container('docker') {
           script {
             withDockerRegistry([credentialsId: "gcr:sa-gcr-image", url: "https://gcr.io"]) {
-               sh "docker push gcr.io/${params.GCP_PROJECT_ID}/${params.GCR_IMAGE_NAME}:${BUILD_ID}"
+               sh "docker push gcr.io/${params.GCP_PROJECT_ID}/${params.GCR_IMAGE_NAME}:${env.BUILD_ID}"
             }
           }
         }
@@ -92,7 +92,7 @@ pipeline {
 
     stage('Deploy to GKE cluster') {
       steps {
-          sh("sed -i 's/tagversion/${BUILD_ID}/g' ./deployment/deployment.yaml")
+          sh "sed -i 's/tagversion/${env.BUILD_ID}/g' ./deployment/deployment.yaml"
           step([$class: 'KubernetesEngineBuilder', namespace:'test', projectId: ${params.GCP_PROJECT_ID}, clusterName: ${params.GKE_CLUSTER_NAME}, zone: ${params.GKE_ZONES}, manifestPattern: 'deployment', credentialsId: "sa-gcr-image", verifyDeployments: true])
         }
       }
