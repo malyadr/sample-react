@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: frontend-img
-          image: gcr.io/malyadri-410908/sample-react:14
+          image: gcr.io/malyadri-410908/sample-react:tagversion
           imagePullPolicy: Always
           ports:
             - containerPort: 3000
