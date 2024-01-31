@@ -17,9 +17,7 @@ spec:
     spec:
       containers:
         - name: frontend-img
-          image: ghcr.io/malyadr/frontendtest63:14
+          image: gcr.io/malyadri-410908/sample-react:14
           imagePullPolicy: Always
           ports:
-            - containerPort: 80
-      imagePullSecrets:
-        - name: ghcr-secret
+            - containerPort: 3000

@@ -91,12 +91,9 @@ pipeline {
     }
 
     stage('Deploy to GKE cluster') {
-      // Canary branch
       steps {
-
-          // Change deployed image in canary to the one we just built
-          sh("sed -i.bak 's#gcr.io/${params.GCP_PROJECT_ID}/sample-react:1.0.0#${BUILD_ID}#' ./deployment/*.yaml")
-          step([$class: 'KubernetesEngineBuilder', namespace:'test', projectId: ${params.GCP_PROJECT_ID}, clusterName: ${params.GKE_CLUSTER_NAME}, zone: ${params.GKE_ZONES}, manifestPattern: 'deployment/deployment.yaml', credentialsId: "gcr:sa-gcr-image", verifyDeployments: true])
+          sh("sed -i.bak 's#gcr.io/${params.GCP_PROJECT_ID}/sample-react:${BUILD_ID}#' ./deployment/deployment.yaml")
+          step([$class: 'KubernetesEngineBuilder', namespace:'test', projectId: ${params.GCP_PROJECT_ID}, clusterName: ${params.GKE_CLUSTER_NAME}, zone: ${params.GKE_ZONES}, manifestPattern: 'deployment', credentialsId: "gcr:sa-gcr-image", verifyDeployments: true])
         }
       }
 
