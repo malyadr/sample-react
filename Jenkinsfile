@@ -22,7 +22,7 @@ pipeline {
     }
   }
   environment {
-        GOOGLE_CLOUD_KEY_FILE_ID = credentials('sa-gcr-image')
+        GOOGLE_CLOUD_KEY_FILE_ID = credentials('sa-test')
     }
   stages {
     stage('Setup parameters') {
