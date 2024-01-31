@@ -77,9 +77,8 @@ pipeline {
       steps {
         container('docker') {
           script {
-             withCredentials([file(credentialsId: 'sa-test', variable: 'GOOGLE_CLOUD_KEY_FILE_ID')]) {
-              sh 'cat "${GOOGLE_CLOUD_KEY_FILE_ID}" | docker login -u _json_key_base64 --password-stdin https://gcr.io'
-              sh "docker push gcr.io/${params.GCP_PROJECT_ID}/${params.GCR_IMAGE_NAME}:${params.GCR_IMAGE_TAG}"
+            withDockerRegistry([credentialsId: "sa-test:${params.GCP_PROJECT_ID}", url: "https://gcr.io"]) {
+               sh "docker push gcr.io/${params.GCP_PROJECT_ID}/${params.GCR_IMAGE_NAME}:${params.GCR_IMAGE_TAG}"
             }
           }
         }
@@ -95,7 +94,8 @@ pipeline {
   }
 }
 
-
+// withDockerRegistry([credentialsId: "gcr:${params.GCP_PROJECT_ID}", url: "https://gcr.io"]) {
+//             sh "docker push gcr.io/${params.GCP_PROJECT_ID}/${params.GCR_IMAGE_NAME}:${params.GCR_IMAGE_TAG}"
 
 //  withCredentials([file(credentialsId: "${PROJECT}_artifacts", variable: 'GCR_CRED')]){
 //               sh 'cat "${GCR_CRED}" | docker login -u _json_key_base64 --password-stdin https://"${REPO_LOCATION}"-docker.pkg.dev'
