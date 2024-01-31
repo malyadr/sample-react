@@ -92,7 +92,7 @@ pipeline {
 
     stage('Deploy to GKE cluster') {
       steps {
-          sh("sed -i.bak 's#gcr.io/${params.GCP_PROJECT_ID}/sample-react:${BUILD_ID}' ./deployment/deployment.yaml")
+          sh("sed -i.bak 's#gcr.io/malyadri-410908/sample-react:14#gcr.io/${params.GCP_PROJECT_ID}/${params.GCR_IMAGE_NAME}:${BUILD_ID}#' ./deployment/deployment.yaml")
           step([$class: 'KubernetesEngineBuilder', namespace:'test', projectId: ${params.GCP_PROJECT_ID}, clusterName: ${params.GKE_CLUSTER_NAME}, zone: ${params.GKE_ZONES}, manifestPattern: 'deployment', credentialsId: "sa-gcr-image", verifyDeployments: true])
         }
       }
