@@ -1,8 +1,8 @@
 pipeline {
   agent any
-  tools{
-        dockerTool "docker"
-    }
+  tools {
+    dockerTool "docker"
+  }
   stages {
     stage('Setup parameters') {
       steps {
@@ -26,13 +26,11 @@ pipeline {
         }
       }
     }
+
     stage('Pulling Image from ECR') {
       steps {
-
         script {
-           {
-            sh "docker build . -t samplereact:latest"
-          }
+          sh "docker build . -t samplereact:latest"
         }
       }
     }
@@ -44,16 +42,15 @@ pipeline {
         }
       }
     }
+
     stage("Pushing ECR Image to GCR") {
       steps {
         script {
-          withDockerRegistry([credentialsId: "sa-gcr-image:${params.GCP_PROJECT_ID}", url: "https://gcr.io"]) {
+          withDockerRegistry([credentialsId: "sa-gcr-image", url: "https://gcr.io"]) {
             sh "docker push gcr.io/${params.GCP_PROJECT_ID}/${params.GCR_IMAGE_NAME}:${params.GCR_IMAGE_TAG}"
           }
         }
       }
     }
-
   }
-
 }
