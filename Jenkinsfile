@@ -67,7 +67,7 @@ pipeline {
       steps {
         container('docker') {
           script {
-            sh "docker tag sample-react:latest eu.gcr.io/${params.GCP_PROJECT_ID}/${params.GCR_IMAGE_NAME}:${params.GCR_IMAGE_TAG}"
+            sh "docker tag sample-react:latest gcr.io/${params.GCP_PROJECT_ID}/${params.GCR_IMAGE_NAME}:${params.GCR_IMAGE_TAG}"
           }
         }
       }
@@ -77,27 +77,13 @@ pipeline {
       steps {
         container('docker') {
           script {
-            withDockerRegistry([credentialsId: "gcr:sa-gcr-image", url: "https://eu.gcr.io"]) {
-               sh "docker push eu.gcr.io/${params.GCP_PROJECT_ID}/${params.GCR_IMAGE_NAME}:${params.GCR_IMAGE_TAG}"
+            withDockerRegistry([credentialsId: "gcr:sa-gcr-image", url: "https://gcr.io"]) {
+               sh "docker push gcr.io/${params.GCP_PROJECT_ID}/${params.GCR_IMAGE_NAME}:${params.GCR_IMAGE_TAG}"
             }
           }
         }
 
-        // container('docker') {
-        //     script {
-        //         sh "docker push gcr.io/${params.GCP_PROJECT_ID}/${params.GCR_IMAGE_NAME}:${params.GCR_IMAGE_TAG}"
-        //     }
-
-        // }
       }
     }
   }
 }
-
-// withDockerRegistry([credentialsId: "gcr:${params.GCP_PROJECT_ID}", url: "https://gcr.io"]) {
-//             sh "docker push gcr.io/${params.GCP_PROJECT_ID}/${params.GCR_IMAGE_NAME}:${params.GCR_IMAGE_TAG}"
-
-//  withCredentials([file(credentialsId: "${PROJECT}_artifacts", variable: 'GCR_CRED')]){
-//               sh 'cat "${GCR_CRED}" | docker login -u _json_key_base64 --password-stdin https://"${REPO_LOCATION}"-docker.pkg.dev'
-//               sh 'docker push ${IMAGE_NAME}:${IMAGE_TAG}'
-//               sh 'docker logout https://"${REPO_LOCATION}"-docker.pkg.dev'
