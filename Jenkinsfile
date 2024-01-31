@@ -6,6 +6,11 @@ pipeline {
         kind: Pod
         spec:
           containers:
+          - name: gcloud
+            image: gcr.io/cloud-builders/gcloud
+            command:
+            - cat
+            tty: true
           - name: docker
             image: docker:latest
             command:
@@ -70,14 +75,20 @@ pipeline {
 
     stage("Pushing GCR Image") {
       steps {
-        container('docker') {
+        container('gcloud') {
           script {
              withCredentials([file(credentialsId: 'sa-test', variable: 'GOOGLE_CLOUD_KEY_FILE_ID')]) {
               sh "gcloud auth activate-service-account --key-file=${GOOGLE_CLOUD_KEY_FILE_ID}"
-              sh "gcloud config set project ${params.GCP_PROJECT_ID}"
-              sh "docker push gcr.io/${params.GCP_PROJECT_ID}/${params.GCR_IMAGE_NAME}:${params.GCR_IMAGE_TAG}"
+              sh "gcloud config set project ${params.GCP_PROJECT_ID}"  
             }
           }
+        }
+
+        container('docker') {
+            script {
+                sh "docker push gcr.io/${params.GCP_PROJECT_ID}/${params.GCR_IMAGE_NAME}:${params.GCR_IMAGE_TAG}"
+            }
+
         }
       }
     }
@@ -86,3 +97,4 @@ pipeline {
 
 
 
+ 
