@@ -77,6 +77,7 @@ pipeline {
       steps {
         container('gcloud') {
           script {
+            input message: 'Do you want to configure Docker for GCR?', ok: 'Yes'
             sh "gcloud config list"
             sh "gcloud auth configure-docker -y"
             //  withCredentials([file(credentialsId: 'sa-test', variable: 'GOOGLE_CLOUD_KEY_FILE_ID')]) {
