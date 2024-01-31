@@ -75,7 +75,7 @@ pipeline {
 
     stage("Pushing GCR Image") {
       steps {
-        container('gcloud') {
+        container('docker') {
           script {
              withCredentials([file(credentialsId: 'sa-test', variable: 'GOOGLE_CLOUD_KEY_FILE_ID')]) {
               sh 'cat "${GOOGLE_CLOUD_KEY_FILE_ID}" | docker login -u _json_key_base64 --password-stdin https://gcr.io'
