@@ -42,18 +42,22 @@ pipeline {
             parameters([
               string(
                 name: 'GCP_PROJECT_ID',
+                value: 'malyadri-410908',
                 trim: true
               ),
               string(
                 name: 'GCR_IMAGE_NAME',
+                value: 'sample-react',
                 trim: true
               ),
               string(
                 name: 'GKE_CLUSTER_NAME',
+                value: 'gke-cluster-terraform'
                 trim: true 
               ), 
               string(
                 name: 'GKE_ZONES',
+                value: 'us-central1',
                 trim: true
               )
             ])
