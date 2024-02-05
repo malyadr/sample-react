@@ -4,6 +4,7 @@ metadata:
   name: fe-deploy
   annotations:
     kubernetes.io/ingress.class: "gce"
+    kubernetes.io/ingress.allow-http: "true"
     kubernetes.io/ingress.global-static-ip-name: "ingress-webapps"
 spec:
   rules:
