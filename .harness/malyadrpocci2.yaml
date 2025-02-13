@@ -127,7 +127,7 @@ pipeline:
                       log:
                         level: info
                     auth:
-                      access_token: sqp_052dc757bfc4fc807c183fcd9d29147eddd3e3ed
+                      access_token: <+secrets.getValue("sonar-token-malyadri")>
                       domain: https://mydomain2.mooo.com/sonarqube
                       ssl: true
                     tool:
