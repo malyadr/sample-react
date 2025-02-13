@@ -98,3 +98,37 @@ pipeline:
                       spec:
                         paths:
                           - junit.xml
+    - stage:
+        name: sonar
+        identifier: sonar
+        description: ""
+        type: CI
+        spec:
+          cloneCodebase: true
+          platform:
+            os: Linux
+            arch: Amd64
+          runtime:
+            type: Cloud
+            spec: {}
+          execution:
+            steps:
+              - step:
+                  type: Sonarqube
+                  name: Sonarqube_1
+                  identifier: Sonarqube_1
+                  spec:
+                    mode: orchestration
+                    config: default
+                    target:
+                      type: repository
+                      detection: auto
+                    advanced:
+                      log:
+                        level: info
+                    auth:
+                      access_token: sqp_052dc757bfc4fc807c183fcd9d29147eddd3e3ed
+                      domain: https://mydomain2.mooo.com/sonarqube
+                      ssl: true
+                    tool:
+                      project_key: harness-ci-malyadri
