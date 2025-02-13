@@ -158,3 +158,41 @@ pipeline:
                       - latest
                     caching: true
                     dockerfile: ./Dockerfile
+    - stage:
+        name: security scan
+        identifier: security_scan
+        description: ""
+        type: CI
+        spec:
+          cloneCodebase: true
+          platform:
+            os: Linux
+            arch: Amd64
+          runtime:
+            type: Cloud
+            spec: {}
+          execution:
+            steps:
+              - step:
+                  type: AquaTrivy
+                  name: AquaTrivy_1
+                  identifier: AquaTrivy_1
+                  spec:
+                    mode: orchestration
+                    config: default
+                    target:
+                      type: container
+                      detection: auto
+                    advanced:
+                      log:
+                        level: info
+                    privileged: true
+                    image:
+                      type: docker_v2
+                      tag: latest
+                      access_id: malyadr
+                      access_token: <+secrets.getValue("docker-pass-malyadri")>
+                      name: malyadr/poc-react
+                      domain: docker.io
+                    sbom:
+                      format: spdx-json
