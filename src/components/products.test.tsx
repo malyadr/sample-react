@@ -1,5 +1,19 @@
 import { render, screen } from "@testing-library/react";
 import Products from "./products";
+import axios from "axios";
+import { getProducts } from "../external/product";
+
+// Mock axios
+jest.mock("axios");
+
+test("should fetch products successfully", async () => {
+  const mockResponse = { data: [{ id: 1, name: "Test Product" }] };
+  
+  (axios.get as jest.Mock).mockResolvedValue(mockResponse);
+
+  const result = await getProducts();
+  expect(result).toEqual(mockResponse.data);
+});
 
 test("render shopping cart correctly", () => {
   render(<Products />);
