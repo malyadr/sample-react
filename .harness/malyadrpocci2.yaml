@@ -126,6 +126,7 @@ pipeline:
                     advanced:
                       log:
                         level: info
+                      fail_on_severity: critical
                     auth:
                       access_token: <+secrets.getValue("sonar-token-malyadri")>
                       domain: https://mydomain2.mooo.com/sonarqube
@@ -186,6 +187,7 @@ pipeline:
                     advanced:
                       log:
                         level: info
+                      fail_on_severity: high
                     privileged: true
                     image:
                       type: docker_v2
