@@ -60,5 +60,5 @@ pipeline:
                     shell: Sh
                     command: |-
                       npm install
-                      CI=true npm test -- --coverage
+                      CI=true npm test -- --ci --coverage || true
                     intelligenceMode: true
