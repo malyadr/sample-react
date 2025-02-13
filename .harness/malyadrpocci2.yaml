@@ -67,3 +67,34 @@ pipeline:
                         paths:
                           - junit.xml
                     intelligenceMode: true
+    - stage:
+        name: build
+        identifier: build
+        description: ""
+        type: CI
+        spec:
+          cloneCodebase: true
+          platform:
+            os: Linux
+            arch: Amd64
+          runtime:
+            type: Cloud
+            spec: {}
+          execution:
+            steps:
+              - step:
+                  type: Run
+                  name: Run_1
+                  identifier: Run_1
+                  spec:
+                    connectorRef: Malyadridocker
+                    image: node:18
+                    shell: Sh
+                    command: |-
+                      npm install  
+                      npm run build
+                    reports:
+                      type: JUnit
+                      spec:
+                        paths:
+                          - junit.xml
