@@ -60,7 +60,7 @@ pipeline:
                     shell: Sh
                     command: |-
                       npm install
-                      CI=true npm test -- --ci --coverage || true --testResultsProcessor=jest-junit
+                      CI=true npm test -- --ci --coverage || true --testResultsProcessor=jest-junit --jest-junit-output=junit.xml
                     reports:
                       type: JUnit
                       spec:
