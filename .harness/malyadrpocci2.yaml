@@ -65,5 +65,5 @@ pipeline:
                       type: JUnit
                       spec:
                         paths:
-                          - ./junit.xml
+                          - junit.xml
                     intelligenceMode: true
